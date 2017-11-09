@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>列表 & Keys---渲染多个组件</title>
+		<meta charset="utf-8">
+		<script src="react.js"></script>
+		<script src="react-dom.js"></script>
+		<script src="browser.min.js"></script>
+	</head>
+	<body>
+		<div id="root"></div>
+	</body>
+	<script type="text/babel">
+		function ListItem(props) {
+			const value = props.value;
+			// 不要将key放在组件中的html标签元素上
+			// 右边这种写法是错误的：<li key={value.toString()}>{value}</li>
+			// 应该采用以下方式来写
+			return <li>{value}</li>
+		}
+
+		function NumberList(props) {
+			const numbers = props.numbers;
+			const listItems = numbers.map((number) => 
+				//元素的key应该在这里指定
+				<ListItem key={number.toString()}
+									value={number}/>
+			);
+			return (
+				<ul>{listItems}</ul>
+			)
+			// 此处还可以这样写
+			// 在JSX中使用大括号嵌入表达式
+			// return (
+			// 	<ul>
+			// 		{numbers.map((number) => 
+			// 			<ListItem key={number.toString()}
+			// 								value={number}/>
+			// 		)}
+			// 	</ul>
+			// )
+		}
+
+		const numbers = [1, 2, 3, 4, 5];
+
+		ReactDOM.render(
+			<NumberList numbers={numbers}/>,
+			document.getElementById('root')
+		)
+
+	</script>
+</html>

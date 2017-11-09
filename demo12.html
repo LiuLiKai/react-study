@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>列表 & Keys---key在兄弟元素之间唯一</title>
+		<meta charset="utf-8">
+		<script src="react.js"></script>
+		<script src="react-dom.js"></script>
+		<script src="browser.min.js"></script>
+	</head>
+	<body>
+		<div id="root"></div>
+	</body>
+	<script type="text/babel">
+		function Blog(props) {
+			// 侧边栏组件
+			const sidebar = (
+				<ul>
+					{props.posts.map((post) => 
+						<li key={post.id.toString()}>
+							{post.title}
+						</li>
+					)}
+				</ul>
+			);
+			// 文本组件
+			const content = props.posts.map((post) => 
+				<div key={post.id}>
+					<h3>{post.title}</h3>
+					<p>{post.content}</p>
+				</div>
+			);
+			// 以上两个组件之间会有重复的key
+			// 但是每个组件中的兄弟元素的key不会重复
+			return (
+				<div>
+					{sidebar}
+					<hr/>
+					{content}
+				</div>
+			)
+		}
+
+		const posts = [
+			{id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
+			{id: 2, title: 'Installation', content: 'You can install React from npm.'}
+		]
+
+		ReactDOM.render(
+			<Blog posts={posts}/>,
+			document.getElementById('root')
+		)
+	</script>
+</html>
