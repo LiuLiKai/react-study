@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>事件处理</title>
+		<meta charset="utf-8">
+		<script src="react.js"></script>
+		<script src="react-dom.js"></script>
+		<script src="browser.min.js"></script>
+	</head>
+	<body>
+		<div id="root"></div>
+	</body>
+	<script type="text/babel">
+		function ActionLink() {
+			function handleClick(e){
+				e.preventDefault();
+				console.log('this link was clicked');
+			}
+
+			return (
+				<a href="#" onClick={handleClick}>
+					Click Me
+				</a>
+			)
+		}
+
+		class Toggle extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = {isToggleOn: true};
+				// 在这里需要为handleClick 绑定this，如果不绑定this会变成undefined
+				this.handleClick = this.handleClick.bind(this);
+			}
+
+			handleClick() {
+				this.setState(prevState => ({
+					isToggleOn: !prevState.isToggleOn
+				}));
+			}
+
+			render() {
+				return (
+					<button onClick={this.handleClick}>
+						{this.state.isToggleOn ? 'ON' : 'OFF'}
+					</button>	
+				)
+			}
+		}
+
+		/*ReactDOM.render(
+			<ActionLink />,
+			document.getElementById('root')
+		)*/
+
+		ReactDOM.render(
+			<Toggle />,
+			document.getElementById('root')
+		)
+	</script>
+</html>

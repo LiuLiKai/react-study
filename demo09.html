@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>条件渲染</title>
+		<!--
+			-条件渲染
+				+-&&运算符
+				+-三目运算符
+				+-阻止组件渲染
+		 -->
+		<meta charset="utf-8">
+		<script src="react.js"></script>
+		<script src="react-dom.js"></script>
+		<script src="browser.min.js"></script>
+	</head>
+	<body>
+		<div id="root"></div>
+	</body>
+	<script type="text/babel">
+		// 邮箱组件 使用&&和三目运算符
+		function MailBox(props) {
+			const unreadMessages = props.unreadMessages;
+			return (
+				<div>
+					Hello!
+					{unreadMessages.length > 0 &&
+						<h2>
+							you have {unreadMessages.length} unread {unreadMessages.length > 1 ? 'messages' : 'message'} 
+						</h2>	
+					}	
+				</div>
+			)
+		}
+		// messge 数组
+		const message = ['message1', 'message2', 'message3'];
+		const message2 = ['message'];
+
+		// 警告组件
+		function WarningBanner(props) {
+			if(!props.warn){
+				return null;
+			}
+
+			return (
+				<div className="warning">
+					Warning
+				</div>
+			) 
+		}
+
+		// 页面组件
+		class Page extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = {showWarning: true};
+				this.handleToggleClick = this.handleToggleClick.bind(this);
+			}
+			
+			handleToggleClick() {
+				this.setState((prevState) => ({
+					showWarning: !prevState.showWarning
+				}));
+			}
+
+			render() {
+				return (
+					<div>
+						<WarningBanner warn={this.state.showWarning}/>
+						<button onClick={this.handleToggleClick}>
+							{this.state.showWarning ? 'Hide' : 'Show'}
+						</button>
+					</div>
+				)
+			}
+		}
+
+		// ReactDOM.render(
+		// 	<MailBox unreadMessages={message2} />,
+		// 	document.getElementById('root')
+		// )
+
+		ReactDOM.render(
+			<Page />,
+			document.getElementById('root')
+		)
+
+	</script>
+</html>
