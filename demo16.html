@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>状态提升</title>
+		<meta charset="utf-8">
+		<script src="react.js"></script>
+		<script src="react-dom.js"></script>
+		<script src="browser.min.js"></script>
+	</head>
+	<body>
+		<div id="root"></div>
+	</body>
+	<script type="text/babel">
+		function BoilingVerdict(props) {
+			if(props.celsius > 100){
+				return <div>水会烧开</div>
+			}else{
+				return <div>水不会烧开</div>
+			}
+		}
+
+		class Calculator extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = {
+					temperature: ''
+				}
+				this.handleChange = this.handleChange.bind(this);
+			}
+
+			handleChange(event) {
+				this.setState({
+					temperature: event.target.value
+				})
+			}
+
+			render() {
+				const temperature = this.state.temperature;
+				return (
+					<fieldset>
+						<legend>输入一个摄氏度</legend>
+						<input value={temperature}
+									 onChange={this.handleChange}/>
+						<BoilingVerdict celsius={parseFloat(temperature)}/>
+					</fieldset>
+				)
+			}
+		}
+
+		ReactDOM.render(
+			<Calculator />,
+			document.getElementById('root')
+		)
+	</script>
+</html>
