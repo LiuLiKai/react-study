@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>组合 & 继承---包含关系</title>
+		<meta charset="utf-8">
+		<script src="react.js"></script>
+		<script src="react-dom.js"></script>
+		<script src="browser.min.js"></script>
+		<style>
+			.FancyBorder-blue{
+				border: 2px solid blue;
+			}
+			.SplitPane{
+				height: 100px;
+				width: 300px;
+			}
+			.SplitPane > div{
+				height: 100%;
+			}
+			.SplitPane-left{
+				width: 100px;
+				float: left;
+				background-color: lightblue;
+			}
+			.SplitPane-right{
+				width: 200px;
+				float: right;
+				background-color: lightcoral;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="root"></div>
+	</body>
+	<script type="text/babel">
+		function FancyBoder(props) {
+			return (
+				<div className={'FancyBorder FancyBorder-' + props.color}>
+					{props.children}
+				</div>
+			)
+		}
+		
+		function Dialog(props) {
+			return (
+				<FancyBoder>
+					<h1 className="Dialog-title">
+						{props.title}
+					</h1>
+					<p className="Dialog-message">
+						{props.message}
+					</p>
+					{props.children}
+				</FancyBoder>
+			)
+		}
+
+		class SignUpDialog extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = {
+					login: ''
+				}
+				this.handleChange = this.handleChange.bind(this);
+				this.handleSignUp = this.handleSignUp.bind(this);
+			}
+			
+			handleChange(event) {
+				this.setState({login: event.target.value});
+			}
+
+			handleSignUp() {
+				alert(`Welcome aboard, ${this.state.login}!`);
+			}
+
+			render() {
+				return (
+					<Dialog title="Mars Exploration Program"
+									message="How should we refer to you?">
+						<input value={this.state.login}
+									 onChange={this.handleChange}/>
+						<button onClick={this.handleSignUp}>
+							Sign Me Up!	
+						</button>
+					</Dialog>
+				)
+			}
+		}
+
+		ReactDOM.render(
+			<SignUpDialog />,
+			document.getElementById('root')
+		)
+
+	</script>
+</html>
